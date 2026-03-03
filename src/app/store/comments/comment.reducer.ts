@@ -8,7 +8,6 @@ import {
   updateComment
 } from './comment.action';
 import { Comment } from '../../core/models/comment.model';
-// Define the structure of your app state
 // export const initialState: Comment[] = [];
 // export const selectCommentsState = (state: any) => state.commentsState;
 const saved = localStorage.getItem('commentsState');
@@ -28,7 +27,7 @@ export const commentReducer = createReducer(
                 replies: Array.isArray(item.replies) ? normalize(item.replies) : []
             }));
 
-        if (_.length) {        // already hydrated
+        if (_.length) {      
             return _;
         }
 
@@ -38,25 +37,21 @@ export const commentReducer = createReducer(
     on(updateScore, (state, { commentId, amount }) => {
         console.log(state);
 
-        // Helper function to update score recursively
         const updateRepliesRecursively = (comments: Comment[], commentId: number, amount: number): Comment[] => {
             return comments.map(comment => {
-            // If this comment matches the commentId, update the score
             if (comment.id === commentId) {
                 return { ...comment, score: comment.score + amount };
             }
 
-            // If the comment has replies, check them and update recursively
             if (comment.replies?.length) {
                 const updatedReplies = updateRepliesRecursively(comment.replies, commentId, amount);
-                return { ...comment, replies: updatedReplies }; // update replies
+                return { ...comment, replies: updatedReplies }; 
             }
 
-            return comment; // return the unchanged comment
+            return comment;
             });
         };
 
-        // Call the recursive helper function for the top-level comments
         return updateRepliesRecursively(state, commentId, amount);
     }),
 
@@ -65,9 +60,8 @@ export const commentReducer = createReducer(
     on(deleteComment, (state, { commentId }) => {
         const deleteRecursively = (comments: Comment[]): Comment[] => {
             return comments
-                .filter(comment => comment.id !== commentId) // remove matching comment
+                .filter(comment => comment.id !== commentId) 
                 .map(comment => {
-                    // if comment has replies, recursively delete from those too
                     if (comment.replies && comment.replies.length > 0) {
                         const updatedReplies = deleteRecursively(comment.replies);
                         return { ...comment, replies: updatedReplies };
@@ -88,17 +82,15 @@ export const commentReducer = createReducer(
                 return {
                 ...comment,
                 replies: [
-                    ...comment.replies,       // old replies
-                    { ...reply, replies: [] } // new nested reply
+                    ...comment.replies,      
+                    { ...reply, replies: [] }
                 ]
                 };
             }
 
-            // If nested replies exist, iterate and update them too
             if (comment.replies && comment.replies.length > 0) {
                 const newNestedReplies = addReplyRecursively(comment.replies);
 
-                // If nested changed, return a new object with updated nested
                 if (newNestedReplies !== comment.replies) {
                 return {
                     ...comment,
@@ -107,12 +99,10 @@ export const commentReducer = createReducer(
                 }
             }
 
-            // otherwise return unchanged
             return comment;
             });
         };
 
-        // ALWAYS return a new array reference
         const newState = [...addReplyRecursively(state)];
         localStorage.setItem('commentsState', JSON.stringify(newState));
         return newState;

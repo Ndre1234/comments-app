@@ -15,14 +15,11 @@ export class AppComponent {
   constructor(private store: Store, private dataService: DataService) {}
 
   ngOnInit() {
-    // Try to load state from localStorage first
     const savedComments = JSON.parse(localStorage.getItem('commentsState') || '[]');
     
     if (savedComments.length > 0) {
-      // Load from localStorage if available
       this.store.dispatch(loadCommentsSuccess({ comments: savedComments }));
     } else {
-      // Otherwise, load from your data service or API
       this.dataService.getComments().subscribe({
         next: data => {
           this.store.dispatch(loadCommentsSuccess({ comments: data.comments }));

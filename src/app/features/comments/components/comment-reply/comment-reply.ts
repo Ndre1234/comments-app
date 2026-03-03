@@ -11,9 +11,9 @@ import { DataService } from '../../../../core/services/data.service';
   styleUrls: ['./comment-reply.css']
 })
 export class CommentReplyComponent {
-  @Input() parentId!: number; // Parent comment ID to link reply to
-  @Input() parentUsername!: string; // Add the parentUsername input to capture parent username
-  @Output() close = new EventEmitter<void>(); // 🔥 notify parent
+  @Input() parentId!: number;
+  @Input() parentUsername!: string;
+  @Output() close = new EventEmitter<void>(); // notify parent
 
   replyText: string = '';
   currentUser: CurrentUser | null = null;
@@ -40,18 +40,17 @@ export class CommentReplyComponent {
       createdAt: new Date().toISOString(),
       score: 0,
       user: this.currentUser,
-      replies: [], // always ensure it is initialized as an empty array
-      replyingTo: this.parentUsername // Set the parent username as replyingTo
+      replies: [],
+      replyingTo: this.parentUsername 
     };
 
     console.log('Dispatching addReply action with reply object:', newReply);
 
-    // Dispatch action to add reply to the parent comment
     this.store.dispatch(
       addReply({ parentCommentId: this.parentId, reply: newReply })
     );
 
-    this.replyText = ''; // Reset the reply input field
-    this.close.emit(); // Notify parent component to close the reply form
+    this.replyText = ''; 
+    this.close.emit(); 
   }
 }

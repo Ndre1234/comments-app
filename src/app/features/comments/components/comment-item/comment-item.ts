@@ -30,38 +30,23 @@ export class CommentItemComponent {
 
   constructor(private modal: NgbModal) {}
 
-  /**
-   * Called when clicking the + button in the score panel
-   */
   onUpvote() {
     this.upvote.emit(this.comment.id);
   }
 
-  /**
-   * Called when clicking the – button in the score panel
-   */
   onDownvote() {
     this.downvote.emit(this.comment.id);
   }
 
-  /**
-   * Called when clicking "Reply"
-   */
   onReplyClick() {
     this.reply.emit(this.comment.id);
   }
 
-  /**
-   * Called when clicking "Edit"
-   */
   onEditClick() {
     this.isEditing = true;
     this.editText = this.comment.content;
   }
 
-  /**
-   * Called when clicking "Delete" - shows confirmation dialog first
-   */
   onDeleteClick() {
     const modalRef = this.modal.open(ConfirmDeleteDialogComponent, { centered: true , size: 'md' });
     
@@ -73,42 +58,26 @@ export class CommentItemComponent {
       },
       () => {
         // dismissed
+        console.log('Delete cancelled');
       }
     );
   }
 
-  /**
-   * Determine if the current comment belongs to the logged‑in user
-   * (optional: only needed if you show Edit/Delete for own posts)
-   */
   isCurrentUser(username: string): boolean {
     return this.comment.user.username === this.currentUserUsername;
   }
 
-  /**
-   * This assumes you push the current user's username
-   * into this component from parent OR store — adjust as needed for your app’s logic.
-   */
   @Input() currentUserUsername: string = '';
 
-  /**
-   * Get the relative time of when the comment was created
-   */
   getRelativeTime(): string {
     return dayjs(this.comment.createdAt).fromNow();
   }
 
-  /**
-   * Cancel edit mode
-   */
   cancelEdit() {
     this.isEditing = false;
     this.editText = '';
   }
 
-  /**
-   * Save edited comment content
-   */
   saveEdit() {
     const text = this.editText.trim();
     if (!text) return;
@@ -117,9 +86,10 @@ export class CommentItemComponent {
   }
 }
 
-/**
- * Confirmation dialog for deleting a comment (ng-bootstrap modal)
- */
+
+
+
+// FOR THE MODALL
 @Component({
   selector: 'app-confirm-delete-dialog',
   templateUrl: './confirm-delete-dialog.html',
@@ -127,7 +97,6 @@ export class CommentItemComponent {
   standalone: false
 })
 export class ConfirmDeleteDialogComponent {
-  // input property set by caller
 
   constructor(@Inject(NgbActiveModal) public activeModal: NgbActiveModal) {}
 

@@ -11,14 +11,12 @@ interface AppState {
 
 @Injectable()
 export class CommentsEffects {
-  // declare the property but don’t initialise it here
   saveCommentsToLocalStorage$;
 
   constructor(
     private actions$: Actions,
     private store: Store<AppState>
   ) {
-    // now that `actions$` and `store` exist, build the effect
     this.saveCommentsToLocalStorage$ = createEffect(
       () =>
         this.actions$.pipe(
