@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Comment } from '../../../../core/models/comment.model';
 import { DataService } from '../../../../core/services/data.service';
@@ -41,12 +42,18 @@ export class CommentListComponent implements OnInit {
   currentUserAvatar: string = '';
 
   ngOnInit() {
-    this.comments$ = this.store.select(state => state.commentsState);
+    // pipe the raw comments through a sorter so the template always receives
+    // first‑level comments ordered by score (highest first) and every set of
+    // replies ordered by creation time (oldest first).
+    this.comments$ = this.store.select(state => state.commentsState)
+      .pipe(
+        map(comments => this.prepareCommentsForDisplay(comments))
+      );
 
+    // keep the debug subscription for change detection
     this.comments$.subscribe(all => {
       console.log('Current comments state in UI:', all);
       this.cdr.detectChanges(); // Manually trigger change detection
-
     });
 
     // 1. hydrate the UI from localStorage if possible
@@ -176,5 +183,39 @@ export class CommentListComponent implements OnInit {
       user: { username: this.currentUserName, image: { png: '' } }
     };
     this.store.dispatch(addComment({ comment: newComment }));
+  }
+
+  /**
+   * Utility used when transforming the comments observable. Returns a deep
+   * copy of the original array with top‑level comments sorted by their
+   * `score` value and any replies sorted by `createdAt`.
+   */
+  /**
+   * trackBy function so Angular can avoid re-rendering the entire list when
+   * only a single comment has changed.
+   */
+  trackById(index: number, item: Comment) {
+    return item.id;
+  }
+
+  private prepareCommentsForDisplay(comments: Comment[]): Comment[] {
+    // copy to avoid mutating store data
+    const clone = (items: Comment[]): Comment[] =>
+      items.map(c => ({ ...c, replies: c.replies ? clone(c.replies) : [] }));
+
+    const timed = (items: Comment[]): Comment[] => {
+      return clone(items)
+        .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+        .map(c => ({ ...c, replies: c.replies ? timed(c.replies) : [] }));
+    };
+
+    const scored = clone(comments)
+      .sort((a, b) => b.score - a.score) // highest score first
+      .map(c => ({
+        ...c,
+        replies: timed(c.replies || [])
+      }));
+
+    return scored;
   }
 }

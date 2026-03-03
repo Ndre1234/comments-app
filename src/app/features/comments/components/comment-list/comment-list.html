@@ -2,7 +2,7 @@
 <div class="container my-3">
 
   <div *ngIf="comments$ | async as comments; else noComments">
-    <div *ngFor="let comment of comments" class="comment-wrapper">
+    <div *ngFor="let comment of comments; trackBy: trackById" class="comment-wrapper">
 
       <!-- MAIN COMMENT -->
       <app-comment-item
@@ -27,7 +27,7 @@
 
       <!-- NESTED REPLIES -->
       <div class="replies-section" *ngIf="comment.replies.length > 0">
-        <div *ngFor="let reply of comment.replies" class="reply-wrapper">
+        <div *ngFor="let reply of comment.replies; trackBy: trackById" class="reply-wrapper">
           <app-comment-item
             [comment]="reply"
             [currentUserUsername]="currentUserName"
@@ -41,7 +41,7 @@
 
           <!-- Add this nested loop for replies under each reply -->
           <div class="nested-replies" *ngIf="reply.replies.length > 0">
-            <div *ngFor="let nestedReply of reply.replies" class="nested-reply-wrapper">
+            <div *ngFor="let nestedReply of reply.replies; trackBy: trackById" class="nested-reply-wrapper">
               <app-comment-item
                 [comment]="nestedReply"
                 [currentUserUsername]="currentUserName"

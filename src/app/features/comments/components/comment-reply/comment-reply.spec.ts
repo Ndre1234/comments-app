@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
-import { CommentReply } from './comment-reply';
+import { CommentReplyComponent } from './comment-reply';
 
 describe('CommentReply', () => {
-  let component: CommentReply;
-  let fixture: ComponentFixture<CommentReply>;
+  let component: CommentReplyComponent;
+  let fixture: ComponentFixture<CommentReplyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CommentReply]
+      imports: [CommentReplyComponent, FormsModule]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CommentReply);
+    fixture = TestBed.createComponent(CommentReplyComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
