@@ -1,0 +1,33 @@
+.reply-input-container {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  box-shadow: none;
+}
+
+.reply-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-right: 8px;
+}
+
+.reply-input:focus {
+  outline: none;
+  box-shadow: none;
+  border: 2px solid #5357b6;
+}
+
+.btn-send {
+  background: #5357b6;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}

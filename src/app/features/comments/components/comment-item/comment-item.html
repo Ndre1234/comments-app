@@ -1,0 +1,39 @@
+<div class="comment-card">
+  <div class="score-panel">
+    <button class="btn-increase" (click)="onUpvote()">+</button>
+    <span class="score-value">{{ comment.score }}</span>
+    <button class="btn-decrease" (click)="onDownvote()">−</button>
+  </div>
+
+  <div class="content-panel">
+    <div class="comment-header">
+      <img [src]="comment.user.image.png" class="avatar" alt="avatar" />
+      <span class="username">{{ comment.user.username }}</span><span *ngIf="isCurrentUser(comment.user.username)" class="you-label">YOU</span>
+      <span class="time">{{ getRelativeTime() }}</span>
+
+      <div class="actions">
+        <button *ngIf="isCurrentUser(comment.user.username)" (click)="onDeleteClick()" class="btn-delete text-danger"><img src="/images/icons/delete.svg" alt="Delete"> Delete</button>
+        <button *ngIf="isCurrentUser(comment.user.username)" (click)="onEditClick()" class="btn-edit"><img src="/images/icons/edit.svg" alt="Edit"> Edit</button>
+        <button *ngIf="!isCurrentUser(comment.user.username)" (click)="onReplyClick()" class="btn-reply"><img src="/images/icons/reply.svg" alt="Reply"> Reply</button>
+      </div>
+    </div>
+
+    <div class="comment-text" *ngIf="!isEditing">
+      {{ comment.content }}
+    </div>
+
+    <!-- Edit form -->
+    <div *ngIf="isEditing" class="edit-form-container">
+      <textarea
+        [(ngModel)]="editText"
+        rows="3"
+        class="edit-textarea form-control"
+        placeholder="Enter your comment..."
+      ></textarea>
+      <div class="edit-actions">
+        <button class="btn btn-primary btn-save" (click)="saveEdit()">UPDATE</button>
+        <button class="btn btn-secondary btn-cancel" (click)="cancelEdit()">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>

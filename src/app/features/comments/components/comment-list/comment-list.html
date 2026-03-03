@@ -1,0 +1,106 @@
+<!-- Show comments after loading from store -->
+<div class="container my-3">
+
+  <div *ngIf="comments$ | async as comments; else noComments">
+    <div *ngFor="let comment of comments" class="comment-wrapper">
+
+      <!-- MAIN COMMENT -->
+      <app-comment-item
+        [comment]="comment"
+        [currentUserUsername]="currentUserName"
+        (upvote)="upvote($event)"
+        (downvote)="downvote($event)"
+        (reply)="toggleReplyForm(comment.id)"
+        (edit)="onEditComment(comment.id, comment.content)"
+        (deleteComment)="onDeleteComment(comment.id)"
+        (editSave)="onEditSave($event)"
+      ></app-comment-item>
+
+      <!-- REPLY FORM (show/hide logic) -->
+      <div *ngIf="activeReplyParentId === comment.id" class="reply-form-container">
+          <app-comment-reply
+              [parentId]="comment.id"
+              [parentUsername]="comment.user.username"
+              (close)="activeReplyParentId = null"
+          ></app-comment-reply>
+      </div>
+
+      <!-- NESTED REPLIES -->
+      <div class="replies-section" *ngIf="comment.replies.length > 0">
+        <div *ngFor="let reply of comment.replies" class="reply-wrapper">
+          <app-comment-item
+            [comment]="reply"
+            [currentUserUsername]="currentUserName"
+            (upvote)="upvote($event)"
+            (downvote)="downvote($event)"
+            (reply)="toggleReplyForm($event)"
+            (edit)="onEditComment($event, reply.content)"
+            (deleteComment)="onDeleteComment($event)"
+            (editSave)="onEditSave($event)"
+          ></app-comment-item>
+
+          <!-- Add this nested loop for replies under each reply -->
+          <div class="nested-replies" *ngIf="reply.replies.length > 0">
+            <div *ngFor="let nestedReply of reply.replies" class="nested-reply-wrapper">
+              <app-comment-item
+                [comment]="nestedReply"
+                [currentUserUsername]="currentUserName"
+                (upvote)="upvote($event)"
+                (downvote)="downvote($event)"
+                (reply)="toggleReplyForm($event)"
+                (edit)="onEditComment($event, nestedReply.content)"
+                (deleteComment)="onDeleteComment($event)"
+                (editSave)="onEditSave($event)"
+              ></app-comment-item>
+            </div>
+          </div>
+
+          <div *ngIf="activeReplyParentId === reply.id" class="reply-form-container">
+            <app-comment-reply
+              [parentId]="reply.id"
+              [parentUsername]="reply.user.username"
+              (close)="activeReplyParentId = null"
+            ></app-comment-reply>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <!-- ---------------------- -->
+  <!-- Bottom Add Comment Box -->
+  <!-- ---------------------- -->
+  <div class="add-comment-container mb-3">
+    <div class="add-comment-inner">
+      
+      <img
+        class="current-user-avatar"
+        [src]="currentUserAvatar"
+        alt="avatar"
+      />
+      
+      <div class=" form-floating flex-grow-1">
+        <textarea
+          [(ngModel)]="newCommentText"
+          placeholder="Add a comment..."
+          rows="4"
+          class="add-comment-textarea form-control form-text h-100"
+        ></textarea>
+        <label for="text" class="input-label">Add a comment...</label>
+      </div>
+
+      <button class="btn-send-main" (click)="submitNewComment()">
+        SEND
+      </button>
+
+    </div>
+  </div>
+
+  <ng-template #noComments>
+    <p class="no-comments-text">No comments yet. Be the first to comment!</p>
+  </ng-template>
+
+</div>

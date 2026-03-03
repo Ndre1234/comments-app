@@ -1,0 +1,19 @@
+<div class="reply-input-container mb-3 form-floating">
+  <textarea
+    [(ngModel)]="replyText"
+    class="reply-input form-control form-text h-100"
+    placeholder="Add a reply..."
+  ></textarea>
+  <label for="text" class="input-label">Add a reply...</label>
+  
+  <button class="btn-send" (click)="submitReply()">SEND</button>
+</div>
+
+<!-- <div class=" form-floating flex-grow-1">
+        <textarea
+          [(ngModel)]="newCommentText"
+          placeholder="Add a comment..."
+          rows="4"
+          class="add-comment-textarea form-control form-text h-100"
+        ></textarea>
+      </div> -->
