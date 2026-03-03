@@ -22,6 +22,21 @@
       {{ comment.content }}
     </div>
 
+    <div class="mv-score-panel d-flex justify-content-between mt-3">
+      <div>
+        <button class="btn-increase" (click)="onUpvote()">+</button>
+        <span class="score-value mx-3">{{ comment.score }}</span>
+        <button class="btn-decrease" (click)="onDownvote()">−</button>
+      </div>
+      
+      <div class="mv-actions">
+        <button *ngIf="isCurrentUser(comment.user.username)" (click)="onDeleteClick()" class="btn-delete text-danger"><img src="/images/icons/delete.svg" alt="Delete"> Delete</button>
+        <button *ngIf="isCurrentUser(comment.user.username)" (click)="onEditClick()" class="btn-edit"><img src="/images/icons/edit.svg" alt="Edit"> Edit</button>
+        <button *ngIf="!isCurrentUser(comment.user.username)" (click)="onReplyClick()" class="btn-reply"><img src="/images/icons/reply.svg" alt="Reply"> Reply</button>
+      </div>
+    </div>
+    
+
     <!-- Edit form -->
     <div *ngIf="isEditing" class="edit-form-container">
       <textarea

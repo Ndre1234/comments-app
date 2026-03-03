@@ -95,6 +95,18 @@
       <button class="btn-send-main" (click)="submitNewComment()">
         SEND
       </button>
+      
+      <div class="d-flex justify-content-between mv-current-user-container">
+        <img
+          class="mv-current-user-avatar"
+          [src]="currentUserAvatar"
+          alt="avatar"
+        />
+        <button class="mv-btn-send-main" (click)="submitNewComment()">
+          SEND
+        </button>
+      </div>
+
 
     </div>
   </div>

@@ -30,12 +30,19 @@ h2 {
 
 .add-comment-inner {
   display: flex;
+  flex-direction: row;
   align-items: center;
   width: 100%;
 }
 
 .current-user-avatar {
-  width: 36px;
+  width: 40px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+
+.mv-current-user-avatar {
+  width: 40px;
   margin-right: 12px;
   border-radius: 50%;
 }
@@ -85,9 +92,71 @@ h2 {
   cursor: pointer;
 }
 
-@media (min-width: 1200px) {
+.mv-current-user-container{
+  display: none;
+  margin-top: 20px;
+}
+
+.mv-btn-send-main {
+  background: #5357b6;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+
+
+
+
+@media (min-width: 961px) and (max-width: 99999px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl
   {
     max-width: 1150px;
+  }
+  .current-user-avatar{
+    display: block;
+  }
+  .mv-current-user-avatar{
+    display: none !important;
+  }
+  .add-comment-inner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .btn-send-main {
+    display: block;
+  }
+  .mv-btn-send-main {
+    display: none;
+  }
+  .mv-current-user-container{
+    display: none;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 1px) {
+  .current-user-avatar{
+    display: none;
+  }
+  .mv-current-user-avatar{
+    display: block !important;
+  }
+  .add-comment-inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+  .btn-send-main {
+    display: none;
+  }
+  .mv-btn-send-main {
+    display: block;
+  }
+  .mv-current-user-container{
+    display: block;
   }
 }

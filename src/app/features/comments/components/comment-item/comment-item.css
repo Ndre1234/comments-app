@@ -38,6 +38,7 @@
 }
 
 
+
 .content-panel {
   flex: 1;
   font-size: 14px;
@@ -155,5 +156,71 @@
 
   .btn-secondary:hover {
     background: #d0d0d0;
+  }
+}
+
+
+
+.mv-score-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* background: #f5f6fa; */
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  color: #44549F;
+
+  .btn-increase,
+  .btn-decrease {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .score-value {
+    font-weight: bold;
+    margin: 4px 0;
+  }
+
+}
+
+.mv-actions button {
+    background: transparent;
+    border: none;
+    color: #5357b6;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 12px;
+  }
+
+@media (min-width: 961px) and (max-width: 99999px) {
+  .score-panel{
+    display: flex;
+  }
+  .mv-score-panel{
+    display: none !important;
+  }
+  .actions{
+    display: block;
+  }
+  .mv-actions{
+    display: block !important;
+  }
+}
+
+@media (max-width: 960px) and (min-width: 1px) {
+  .score-panel{
+    display: none;
+  }
+  .mv-score-panel{
+    display: block;
+  }
+  .mv-actions{
+    display: block;
+  }
+  .actions{
+    display: none;
   }
 }
